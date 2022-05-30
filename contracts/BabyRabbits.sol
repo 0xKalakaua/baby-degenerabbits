@@ -42,16 +42,15 @@ contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
         string memory baseURI,
         string memory baseExtension,
         string memory notRevealedURI,
-        uint max,
+        uint max_supply,
         address rabbitsAddress,
         address lolasAddress,
-        address admin,
-        address payable wallet
+        address admin
     )
         ERC721 (name, symbol)
     {
         tokenIdTracker.increment(); // Start collection at 1
-        MAX_SUPPLY = max;
+        MAX_SUPPLY = max_supply;
         _baseTokenURI = baseURI;
         _baseExtension = baseExtension;
         _notRevealedURI = notRevealedURI;
@@ -59,7 +58,6 @@ contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
         _degenerabbits = IERC721(rabbitsAddress);
         _lolasGirls = IERC721(lolasAddress);
         _setupRole(DEFAULT_ADMIN_ROLE, admin);
-        _setupRole(DEFAULT_ADMIN_ROLE, wallet);
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
@@ -93,11 +91,11 @@ contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
         require(tokenIdTracker.current() <= MAX_SUPPLY, "all tokens have been minted");
         require(
             _rabbitHasBaby[rabbitTokenId] == false,
-            "this rabbit has a baby already"
+            "rabbit has a baby already"
         );
         require(
-            _lolasgirlHasBaby[rabbitTokenId] == false,
-            "this lolasGirl has a baby already"
+            _lolasgirlHasBaby[lolasTokenId] == false,
+            "lolasGirl has a baby already"
         );
         require(
             _degenerabbits.ownerOf(rabbitTokenId) == msg.sender,
@@ -109,12 +107,12 @@ contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
         );
 
         _rabbitHasBaby[rabbitTokenId] = true;
-        _lolasgirlHasBaby[rabbitTokenId] = true;
+        _lolasgirlHasBaby[lolasTokenId] = true;
 
         _safeMint(msg.sender, tokenIdTracker.current());
         _setTokenURI(
             tokenIdTracker.current(),
-            string(abi.encodePacked(tokenIdTracker.current().toString(), _baseExtension))
+            string(abi.encodePacked(tokenIdTracker.current().toString()))
         );
         tokenIdTracker.increment();
 
@@ -128,11 +126,11 @@ contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
         require(tokenIdTracker.current() <= MAX_SUPPLY, "all tokens have been minted");
         require(
             _rabbitHasBaby[rabbitTokenId] == false,
-            "this rabbit has a baby already"
+            "rabbit has a baby already"
         );
         require(
-            _lolasgirlHasBaby[rabbitTokenId] == false,
-            "this lolasGirl has a baby already"
+            _lolasgirlHasBaby[lolasTokenId] == false,
+            "lolasGirl has a baby already"
         );
         require(
             _degenerabbits.ownerOf(rabbitTokenId) == to,
@@ -144,12 +142,12 @@ contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
         );
 
         _rabbitHasBaby[rabbitTokenId] = true;
-        _lolasgirlHasBaby[rabbitTokenId] = true;
+        _lolasgirlHasBaby[lolasTokenId] = true;
 
         _safeMint(to, tokenIdTracker.current());
         _setTokenURI(
             tokenIdTracker.current(),
-            string(abi.encodePacked(tokenIdTracker.current().toString(), _baseExtension))
+            string(abi.encodePacked(tokenIdTracker.current().toString()))
         );
         tokenIdTracker.increment();
 
@@ -173,7 +171,7 @@ contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
             require(_exists(tokenId), "URI query for nonexistent token");
             return _notRevealedURI;
         }
-        return ERC721URIStorage.tokenURI(tokenId);
+        return string(abi.encodePacked(ERC721URIStorage.tokenURI(tokenId), _baseExtension));
     }
 
     function supportsInterface(bytes4 interfaceId)
