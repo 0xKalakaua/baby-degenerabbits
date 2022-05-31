@@ -1,6 +1,6 @@
 import pytest
 import brownie
-from brownie import network, accounts, BabyRabbits, MockERC721
+from brownie import network, accounts, Degenebabies, MockERC721
 
 @pytest.fixture
 def rabbits():
@@ -43,7 +43,7 @@ def contracts(rabbits, lolas):
     max_supply = 10
     admin = accounts[9]
 
-    babies = BabyRabbits.deploy(
+    babies = Degenebabies.deploy(
                             name,
                             symbol,
                             base_uri,

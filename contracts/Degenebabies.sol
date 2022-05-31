@@ -6,7 +6,7 @@
     ( . .)  ( . .)  ( . .)
    C(")(")  C(")(") C(")(")
 
-  Tombheads x FTM DEAD x 0xKalakaua - BabyRabbits - NFT Collection -
+  Tombheads x FTM DEAD x 0xKalakaua - The Degenebabies - NFT Collection -
 
 */
 
@@ -19,7 +19,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract BabyRabbits is AccessControl, ERC721Enumerable, ERC721URIStorage {
+contract Degenebabies is AccessControl, ERC721Enumerable, ERC721URIStorage {
     using Counters for Counters.Counter;
     using Strings for uint;
 
